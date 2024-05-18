@@ -18,24 +18,7 @@ public class CDASUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
     
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<CDASUser> user = userRepository.findUserByUsername(username);
-        if (user.isPresent()) {
-            var userObj = user.get();
-            return User.builder()
-                    .username(userObj.getUsername())
-                    .password(userObj.getPassword())
-                    .roles(getRoles(userObj))
-                    .build();
-        }else {
-            throw new UsernameNotFoundException(username);
-        }
-    }
-
-    private String[] getRoles(CDASUser user) {
-        if(user.getRoles() == null){
-            return null;
-        }
-        return user.getRoles().split(",");
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(email).orElseThrow();
     }
 }
