@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редагування користувача</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Редагування користувача</h2>
+    <form th:action="@{/admin/users/edit/{id}(id=${user.id})}" method="post">
+        <input type="text" th:value="${hospital.name}" name="hospitalName" placeholder="Назва закладу" required>
+        <input type="email" th:value="${user.email}" name="email" placeholder="Email" required>
+        <input type="text" th:value="${hospital.phone}" name="phone" placeholder="Телефон" required>
+        <input type="hidden" th:value="${hospital.code}" name="code">
+        <button type="submit">Зберегти</button>
+        <a href="/admin/users">Назад</a>
+    </form>
+</div>
+</body>
+</html>

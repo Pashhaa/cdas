@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Звіти</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            height: 100vh;
+        }
+        .sidebar h2 {
+            margin: 0;
+            padding-bottom: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+        }
+        .sidebar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .action-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .action-button:hover {
+            background-color: #c82333;
+        }
+        .logout-button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            position: absolute;
+            bottom:   0;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input, .search-container select {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-container button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+        .download-button {
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .download-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+        <h2>Меню</h2>
+        <a href="/admin/dashboard">Головна</a>
+        <a href="/admin/users">Управління закладами</a>
+        <a href="/admin/reports">Звіти</a>
+    <form action="/logout" method="post" style="display:inline;">
+        <button type="submit" class="logout-button">Вийти</button>
+    </form>
+    </div>
+<div class="content">
+    <h2>Всі звіти</h2>
+    <div class="search-container">
+        <form th:action="@{/admin/reports}" method="get">
+            <input type="text" name="code" placeholder="ЄДРПОУ">
+            <select name="region">
+                <option value="">Всі області</option>
+                <option value="Вінницька">Вінницька</option>
+                <option value="Волинська">Волинська</option>
+                <option value="Дніпропетровська">Дніпропетровська</option>
+                <option value="Донецька">Донецька</option>
+                <option value="Житомирська">Житомирська</option>
+                <option value="Закарпатська">Закарпатська</option>
+                <option value="Запорізька">Запорізька</option>
+                <option value="Івано-Франківська">Івано-Франківська</option>
+                <option value="Київська">Київська</option>
+                <option value="Кіровоградська">Кіровоградська</option>
+                <option value="Луганська">Луганська</option>
+                <option value="Львівська">Львівська</option>
+                <option value="Миколаївська">Миколаївська</option>
+                <option value="Одеська">Одеська</option>
+                <option value="Полтавська">Полтавська</option>
+                <option value="Рівненська">Рівненська</option>
+                <option value="Сумська">Сумська</option>
+                <option value="Тернопільська">Тернопільська</option>
+                <option value="Харківська">Харківська</option>
+                <option value="Херсонська">Херсонська</option>
+                <option value="Хмельницька">Хмельницька</option>
+                <option value="Черкаська">Черкаська</option>
+                <option value="Чернівецька">Чернівецька</option>
+                <option value="Чернігівська">Чернігівська</option>
+                <option value="місто Київ">місто Київ</option>
+                <option value="місто Севастополь">місто Севастополь</option>
+            </select>
+            <input type="text" name="startPeriod" placeholder="Початок періоду MM.РРРР">
+            <input type="text" name="endPeriod" placeholder="Кінець періоду MM.РРРР">
+            <button type="submit">Пошук</button>
+        </form>
+    </div>
+    <form th:action="@{/admin/downloadReports}" method="get">
+        <input type="hidden" name="code" th:value="${param.edrpou}">
+        <input type="hidden" name="region" th:value="${param.region}">
+        <input type="hidden" name="startPeriod" th:value="${param.startPeriod}">
+        <input type="hidden" name="endPeriod" th:value="${param.endPeriod}">
+        <button type="submit" class="download-button">Завантажити обрані звіти</button>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>Файл</th>
+            <th>Заклад</th>
+            <th>ЄДРПОУ</th>
+            <th>Email</th>
+            <th>Область</th>
+            <th>Період</th>
+            <th>Дата завантаження</th>
+            <th>Дії</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="report : ${reports}">
+            <td><a th:href="@{/admin/downloadReport(reportId=${report.getReport().getId()})}" th:text="${report.report.reportName}"></a></td>
+            <td th:text="${report.user.name}"></td>
+            <td th:text="${report.report.establishmentCode}"></td>
+            <td th:text="${report.user.email}"></td>
+            <td th:text="${report.report.region}"></td>
+            <td th:text="${report.report.reportMonth}"></td>
+            <td th:text="${#dates.format(report.uploadDate, 'dd.MM.yyyy')}"></td>
+            <td>
+                <form th:action="@{/admin/deleteReport}" method="post">
+                    <input type="hidden" name="reportId" th:value="${report.getReport().getId()}">
+                    <button type="submit" class="action-button">Видалити</button>
+                </form>
+            </td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

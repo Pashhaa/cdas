@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мої звіти</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            height: 100vh;
+        }
+        .sidebar h2 {
+            margin: 0;
+            padding-bottom: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+        }
+        .sidebar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .logout-button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            position: absolute;
+            bottom:   0;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>Меню</h2>
+    <a href="/hospital/dashboard">Головна</a>
+    <a href="/hospital/uploadReport">Завантажити звіт</a>
+    <a href="/hospital/myReports">Мої звіти</a>
+    <form action="/logout" method="post" style="display:inline;">
+        <button type="submit" class="logout-button">Вийти</button>
+    </form>
+</div>
+<div class="content">
+    <h2>Мої звіти</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Файл</th>
+            <th>Дата завантаження</th>
+            <th>Дії</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userReport : ${userReports}">
+            <td><a th:href="@{/hospital/downloadReport(reportId=${userReport.report.id})}" th:text="${userReport.report.reportName}"></a></td>
+            <td th:text="${userReport.uploadDate}"></td>
+            <td>
+                <form th:action="@{/hospital/deleteReport}" method="post">
+                    <input type="hidden" name="reportId" th:value="${userReport.report.id}">
+                    <button type="submit" class="delete-button">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

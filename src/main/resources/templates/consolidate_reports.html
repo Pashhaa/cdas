@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консолідація</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            height: 100vh;
+        }
+        .sidebar h2 {
+            margin: 0;
+            padding-bottom: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+        }
+        .sidebar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .logout-button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            position: absolute;
+            bottom:   0;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .content {
+            margin-left: 2px;
+            flex-direction: column;
+            padding: 20px;
+            flex: 1;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input, .search-container select {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-container button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+        .download-button {
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .download-button:hover {
+            background-color: #218838;
+        }
+        .message {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>Меню</h2>
+    <a href="/financier/dashboard">Головна</a>
+    <a href="/financier/hospitals">Заклади</a>
+    <a href="/financier/reports">Звіти</a>
+    <a href="/financier/consolidateReports">Консолідація</a>
+    <form action="/logout" method="post" style="display:inline;">
+        <button type="submit" class="logout-button">Вийти</button>
+    </form>
+</div>
+<div class="content">
+    <h2>Консолідація звітів</h2>
+    <div class="search-container">
+        <form th:action="@{/financier/downloadConsolidatedReport}" method="get">
+            <input type="text" name="code" placeholder="ЄДРПОУ">
+            <br>
+            <br>
+            <select name="region">
+                <option value="">Всі області</option>
+                <option value="Вінницька">Вінницька</option>
+                <option value="Волинська">Волинська</option>
+                <option value="Дніпропетровська">Дніпропетровська</option>
+                <option value="Донецька">Донецька</option>
+                <option value="Житомирська">Житомирська</option>
+                <option value="Закарпатська">Закарпатська</option>
+                <option value="Запорізька">Запорізька</option>
+                <option value="Івано-Франківська">Івано-Франківська</option>
+                <option value="Київська">Київська</option>
+                <option value="Кіровоградська">Кіровоградська</option>
+                <option value="Луганська">Луганська</option>
+                <option value="Львівська">Львівська</option>
+                <option value="Миколаївська">Миколаївська</option>
+                <option value="Одеська">Одеська</option>
+                <option value="Полтавська">Полтавська</option>
+                <option value="Рівненська">Рівненська</option>
+                <option value="Сумська">Сумська</option>
+                <option value="Тернопільська">Тернопільська</option>
+                <option value="Харківська">Харківська</option>
+                <option value="Херсонська">Херсонська</option>
+                <option value="Хмельницька">Хмельницька</option>
+                <option value="Черкаська">Черкаська</option>
+                <option value="Чернівецька">Чернівецька</option>
+                <option value="Чернігівська">Чернігівська</option>
+                <option value="місто Київ">місто Київ</option>
+                <option value="місто Севастополь">місто Севастополь</option>
+            </select>
+            <br>
+            <br>
+            <input type="text" name="startPeriod" placeholder="Початок періоду MM.РРРР">
+            <br>
+            <input type="text" name="endPeriod" placeholder="Кінеци періоду MM.РРРР">
+            <br>
+            <br>
+            <input type="text" name="salaryMin" placeholder="Середня зарплата від, грн">
+            <br>
+            <input type="text" name="salaryMax" placeholder="Середня зарплата до, грн">
+            <br>
+            <button type="submit" class="download-button">Завантажити консолідований звіт</button>
+        </form>
+        <div class="message" th:if="${message}">
+            <p th:text="${message}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

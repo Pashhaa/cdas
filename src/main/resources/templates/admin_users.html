@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управління закладами</title>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            height: 100vh;
+        }
+        .sidebar h2 {
+            margin: 0;
+            padding-bottom: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+        }
+        .sidebar a:hover {
+            background-color: #0056b3;
+            border-radius: 4px;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-bar input, .search-bar select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .search-bar button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+        .btn-add-user {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn-add-user:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            margin: 2px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .action-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            margin: 2px;
+         }
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+        .logout-button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            position: absolute;
+            bottom:   0;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+    <script>
+        function confirmDelete() {
+            return confirm("Ви впевнені, що хочете видалити заклад?");
+        }
+    </script>
+</head>
+<body>
+<div class="sidebar">
+    <h2>Меню</h2>
+    <a href="/admin/dashboard">Головна</a>
+    <a href="/admin/users">Управління закладами</a>
+    <a href="/admin/reports">Звіти</a>
+    <form action="/logout" method="post" style="display:inline;">
+        <button type="submit" class="logout-button">Вийти</button>
+    </form>
+</div>
+<div class="content">
+    <div class="header">Управління закладами</div>
+
+    <a href="/admin/users/add" class="btn-add-user">Зареєструвати заклад</a>
+
+    <div class="search-bar">
+        <form th:action="@{/admin/users}" method="get">
+            <input type="text" name="code" placeholder="Пошук за кодом ЄДРПОУ">
+            <select name="region">
+                <option value="">Всі області</option>
+                <option value="АР Крим">АР Крим</option>
+                <option value="Вінницька">Вінницька</option>
+                <option value="Волинська">Волинська</option>
+                <option value="Дніпропетровська">Дніпропетровська</option>
+                <option value="Донецька">Донецька</option>
+                <option value="Житомирська">Житомирська</option>
+                <option value="Закарпатська">Закарпатська</option>
+                <option value="Запорізька">Запорізька</option>
+                <option value="Івано-Франківська">Івано-Франківська</option>
+                <option value="Київська">Київська</option>
+                <option value="Кіровоградська">Кіровоградська</option>
+                <option value="Луганська">Луганська</option>
+                <option value="Львівська">Львівська</option>
+                <option value="Миколаївська">Миколаївська</option>
+                <option value="Одеська">Одеська</option>
+                <option value="Полтавська">Полтавська</option>
+                <option value="Рівненська">Рівненська</option>
+                <option value="Сумська">Сумська</option>
+                <option value="Тернопільська">Тернопільська</option>
+                <option value="Харківська">Харківська</option>
+                <option value="Херсонська">Херсонська</option>
+                <option value="Хмельницька">Хмельницька</option>
+                <option value="Черкаська">Черкаська</option>
+                <option value="Чернівецька">Чернівецька</option>
+                <option value="Чернігівська">Чернігівська</option>
+                <option value="місто Київ">місто Київ</option>
+                <option value="місто Севастополь">місто Севастополь</option>
+            </select>
+            <select name="status">
+                <option value="">Всі статуси</option>
+                <option value="active">Активний</option>
+                <option value="inactive">Неактивний</option>
+            </select>
+            <button type="submit">Пошук</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Код ЄДРПОУ</th>
+            <th>Область</th>
+            <th>Назва закладу</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Статус</th>
+            <th>Дії</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${hospitalMap[user.email]?.code}"></td>
+            <td th:text="${hospitalMap[user.email]?.region}"></td>
+            <td th:text="${hospitalMap[user.email]?.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${hospitalMap[user.email]?.phone}"></td>
+            <td th:text="${user.enabled ? 'Активний' : 'Неактивний'}"></td>
+            <td>
+                <form th:action="@{/admin/users/toggleStatus/{id}(id=${user.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="action-button" th:text="${user.enabled ? 'Деактивувати' : 'Активувати'}">Деактивувати</button>
+                </form>
+                <form th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post" style="display: inline;" onsubmit="return confirmDelete();">
+                    <button type="submit" class="action-button">Видалити</button>
+                </form>
+                <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="button">Редагувати</a>
+                <a th:href="@{/admin/viewHospitalReports(userId=${user.id})}" class="action-button">Перегляд</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
